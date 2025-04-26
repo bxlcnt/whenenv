@@ -1,0 +1,53 @@
+% whenenv-doc.tex
+\documentclass{article}
+
+\usepackage{whenenv}
+\usepackage{lipsum} % for dummy text
+
+\begin{document}
+
+\title{Documentation and Demonstration of the \texttt{whenenv} Package}
+\author{The \texttt{whenenv} Package Team}
+\date{\today}
+\maketitle
+
+\section*{Introduction}
+The \texttt{whenenv} package provides a simple mechanism to conditionally include or exclude blocks of content using named environments. This is useful for managing content variations across output formats (e.g., LaTeX vs HTML) or publication stages (e.g., draft vs final).
+
+\section*{Usage}
+
+\subsection*{1. Declare a Conditional Environment}
+\begin{verbatim}
+\whenEnv{whenPdf}
+\end{verbatim}
+This declares a new environment \texttt{whenPdf} and initializes its toggle to false.
+
+\subsection*{2. Enable or Disable a Conditional Environment}
+\begin{verbatim}
+\whenEnable{whenPdf}  % turns on the environment
+\whenDisable{whenPdf} % turns it off again
+\end{verbatim}
+
+\subsection*{3. Use the Environment}
+\begin{verbatim}
+\begin{whenPdf}
+This will appear only if whenPdf is enabled.
+\end{whenPdf}
+\end{verbatim}
+
+\section*{Example}
+
+\whenEnv{whenPdf}
+\whenEnable{whenPdf}
+
+\begin{whenPdf}
+\textbf{This is visible because \texttt{whenPdf} is enabled.}
+\end{whenPdf}
+
+\whenDisable{whenPdf}
+
+\begin{whenPdf}
+This will not be shown because \texttt{whenPdf} is now disabled.
+\end{whenPdf}
+
+\end{document}

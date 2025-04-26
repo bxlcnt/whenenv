@@ -1,0 +1,31 @@
+\documentclass{article}
+\usepackage{lipsum} % For dummy text
+\usepackage{whenenv}
+
+\begin{document}
+
+% Define the environment (should be idempotent)
+\whenEnv{whenTest}
+\whenEnv{whenTest} % No redefinition error should occur here
+
+% Enable and test toggle
+\whenEnable{whenTest}
+
+\begin{whenTest}
+This should appear. (Enabled block)
+\end{whenTest}
+
+% Disable and test toggle
+\whenDisable{whenTest}
+
+\begin{whenTest}
+This should NOT appear. (Disabled block)
+\end{whenTest}
+
+% Trigger error: enabling undefined env
+% \whenEnable{undefinedEnv} % Uncomment to verify error handling
+
+% Trigger error: disabling undefined env
+% \whenDisable{undefinedEnv} % Uncomment to verify error handling
+
+\end{document}

@@ -1,0 +1,46 @@
+% whenenv.sty --- Conditional Environments Based on Toggles
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{whenenv}[2025/04/25 v0.1 Conditional Environments with Toggle Control]
+
+\RequirePackage{etoolbox}
+\RequirePackage{environ}
+
+% Internal storage for tracking defined environments
+\newcommand{\@whenenv@defined@list}{}
+
+% Macro to check if an environment has already been defined
+\newcommand{\@whenenv@isdefined}[1]{%
+  \def\@tempa{#1}%
+  \def\@tempb{}%
+  \def\@tempresult{0}%
+  \def\do##1{\ifx\@tempa##1\def\@tempresult{1}\fi}%
+  \docsvlist{\@whenenv@defined@list}%
+  \@tempresult
+}
+
+% Main command: \whenEnv{name}
+\newcommand{\whenEnv}[1]{%
+  \ifcsundef{whenenv@toggle@#1}{%
+    \newtoggle{whenenv@toggle@#1}%
+    \togglefalse{whenenv@toggle@#1}%
+    \expandafter\g@addto@macro\expandafter\@whenenv@defined@list\expandafter{,#1}%
+    \expandafter\NewEnviron\csname #1\endcsname{%
+      \iftoggle{whenenv@toggle@#1}{\BODY}{}%
+    }%
+  }{}%
+}
+
+% Command: \whenEnable{name}
+\newcommand{\whenEnable}[1]{%
+  \ifcsundef{whenenv@toggle@#1}{%
+    \PackageError{whenenv}{Environment `#1' has not been defined with \string\whenEnv}{Define the environment first with \string\whenEnv}\relax
+  }{\toggletrue{whenenv@toggle@#1}}%
+}
+
+% Command: \whenDisable{name}
+\newcommand{\whenDisable}[1]{%
+  \ifcsundef{whenenv@toggle@#1}{%
+    \PackageError{whenenv}{Environment `#1' has not been defined with \string\whenEnv}{Define the environment first with \string\whenEnv}\relax
+  }{\togglefalse{whenenv@toggle@#1}}%
+}

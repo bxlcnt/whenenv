@@ -1,0 +1,91 @@
+#+TITLE: whenenv — A LaTeX Conditional Environment Package (on top of etoolbox)
+#+AUTHOR: whenenv Package Team
+#+DATE: 2025-04-25
+#+OPTIONS: toc:nil
+
+* Overview
+
+The `whenenv` LaTeX package provides a minimal and elegant way to define
+conditional content blocks. It is built on top of `etoolbox` and uses the
+`\NewEnviron` mechanism from `environ` to define environments whose
+inclusion is toggled by named switches.
+
+It is especially useful in documents that need selective inclusion based on
+output format, target audience, or publication state.
+
+* Features
+
+- Define toggleable environments with `\whenEnv{envname}`
+- Enable or disable environment content with `\whenEnable{envname}` or `\whenDisable{envname}`
+- Environments are idempotently defined (safe for multiple declarations)
+- Environments render their contents only when enabled
+
+* Problem Domain
+
+There are many ways to do conditional text in LaTeX.
+
+The comment.sty package is one. That package can not be nested and is fragile.
+
+The etoolbox.sty is too low level. It provides basic machinary for conditioning but
+is not easy to read.
+
+whenenv.sty uses etoolbox.sty to accomplish equivalent of comment.sty.
+It could be easily enhanced to fully replace/obsolete comment.sty.
+
+* Installation
+
+To use `whenenv.sty` in your project:
+
+1. Place `whenenv.sty` in your LaTeX source directory.
+2. Include it in your preamble:
+
+   #+begin_src latex
+   \usepackage{whenenv}
+   #+end_src
+
+* Usage
+
+1. **Declare a toggled environment**
+
+   #+begin_src latex
+   \whenEnv{whenHtml}
+   #+end_src
+
+2. **Control inclusion**
+
+   #+begin_src latex
+   \whenEnable{whenHtml}
+   \whenDisable{whenHtml}
+   #+end_src
+
+3. **Wrap content**
+
+   #+begin_src latex
+   \begin{whenHtml}
+   This text is shown only when `whenHtml` is enabled.
+   \end{whenHtml}
+   #+end_src
+
+* Idempotency
+
+Calling `\whenEnv{foo}` multiple times has no effect after the first.
+The macro tracks previously defined environments internally.
+
+* Benefits
+
+- Works across `\input` and modular files
+- Cleaner alternative to `comment.sty`
+- Declarative and toggle-based
+- Useful for literate programming and multi-output publishing
+
+* License
+
+This package is released under the LaTeX Project Public License v1.3c or later.
+This is a Libre-Halaal polyexistential.
+
+* Design and Credits
+
+This packages is designed by Mohsen Banan. But, implemented by ChatGpt.
+The design specification is in file:./design-gpt.transcript.
+
+Most of the documentation and test file was also created using AI.
